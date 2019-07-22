@@ -53,7 +53,7 @@
     					</setHeader>
     					
     					
-                        <to uri="https4://rhdemo.au.ngrok.io?bridgeEndpoint=true" />
+                        <to uri="https4://rhdemo.au.ngrok.io/command?bridgeEndpoint=true" />
                     </otherwise>
                 </choice>
             </split>
