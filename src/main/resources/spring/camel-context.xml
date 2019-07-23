@@ -3,6 +3,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
     <bean class="com.redhat.bfarr.dance.DanceMoveData" id="dancemovedata"/>
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+ 
+			
         <dataFormats>
             <json id="serializer" library="Jackson"/>
         </dataFormats>
@@ -13,14 +15,17 @@
             <apiProperty key="api.version" value="1.0.0"/>
         </restConfiguration>
         
-        <rest id="rest-1145a5ec-d46f-43da-a74a-63aa25327cc2" path="/move">
+        <rest id="rest-1145a5ec-d46f-43da-a74a-63aa25327cc2" path="/move" enableCORS="true">
             <post consumes="application/json"
                 id="post-00bb2d77-8d31-41d7-a978-1b9129d587bb" uri="/{direction}">
                 <to uri="direct:processingRoute"/>
             </post>
         </rest>
         
+       
+			
         <route id="processingRoute">
+        	
             <from id="_from1" uri="direct:processingRoute"/>
             <to id="_to1" uri="bean:dancemovedata?method=getMoves(${header.direction},${headers})"/>
 
@@ -42,8 +47,6 @@
     					</setHeader>
     					<setHeader headerName="Exchange.HTTP_PATH">
         					<constant>/</constant>
-    					</setHeader><setHeader headerName="Exchange.HTTP_PATH">
-        					<constant></constant>
     					</setHeader>
     					<setHeader headerName="Exchange.HTTP_QUERY">
         					<constant></constant>
@@ -52,15 +55,30 @@
         					<constant>application/json</constant>
     					</setHeader>
     					
-    					
+
                         <to uri="https4://rhdemo.au.ngrok.io/command?bridgeEndpoint=true" />
+                        
                     </otherwise>
                 </choice>
             </split>
+            <setHeader headerName="Access-Control-Allow-Methods">
+   				<constant>POST, GET, OPTIONS</constant>
+			</setHeader>
+			<setHeader headerName="Access-Control-Allow-Origin">
+   				<constant>*</constant>
+			</setHeader>
+			<setHeader headerName="Access-Control-Allow-Headers">
+   				<constant>x-requested-with</constant>
+			</setHeader>
+            <transform>
+                <constant>OK</constant>
+            </transform>
         </route>
         <route id="SedaRoute0">
             <from id="_from0" uri="file:sequences?noop=true"/>
             <bean id="_bean0" method="setValue(${header.CamelFileNameOnly}, ${body})" ref="dancemovedata"/>
         </route>
+
+			
      </camelContext>
 </beans>

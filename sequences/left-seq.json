@@ -2,7 +2,7 @@
 
 {
     "robotName": "P_NAME",
-    "cmdString": "speed P_TURN_SPEED"
+    "cmdString": "speedLeft P_TURN_SPEED"
 }
 ,
 {
@@ -60,7 +60,7 @@
 ,
 {
     "robotName": "P_NAME",
-    "cmdString": "speed P_TURN_SPEED"
+    "cmdString": "speedRight P_TURN_SPEED"
 }
 ,
 {
