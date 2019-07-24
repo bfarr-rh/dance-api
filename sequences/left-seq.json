@@ -32,16 +32,6 @@
 ,
 {
     "robotName": "P_NAME",
-    "cmdString": "left"
-}
-,
-{
-    "robotName": "P_NAME",
-    "cmdString": "left"
-}
-,
-{
-    "robotName": "P_NAME",
     "cmdString": "speed P_SPEED"
 }
 ,
@@ -61,16 +51,6 @@
 {
     "robotName": "P_NAME",
     "cmdString": "speedRight P_TURN_SPEED"
-}
-,
-{
-    "robotName": "P_NAME",
-    "cmdString": "right"
-}
-,
-{
-    "robotName": "P_NAME",
-    "cmdString": "right"
 }
 ,
 {
