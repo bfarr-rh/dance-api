@@ -16,11 +16,29 @@
             id="rest-1145a5ec-d46f-43da-a74a-63aa25327cc2" path="/move">
             <post consumes="application/json"
                 id="post-00bb2d77-8d31-41d7-a978-1b9129d587bb" uri="/{direction}">
-                <to uri="direct:processingRoute"/>
+                <to uri="direct:httpprocessingRoute"/>
             </post>
         </rest>
+        
+        <route id="httpprocessingRoute">
+            <from id="_from1" uri="direct:httpprocessingRoute"/>
+            <to uri="seda:processingRoute?waitForTaskToComplete=Never"/>
+             <setHeader headerName="Access-Control-Allow-Methods" id="_setHeader5">
+                <constant>POST, GET, OPTIONS</constant>
+            </setHeader>
+            <setHeader headerName="Access-Control-Allow-Origin" id="_setHeader6">
+                <constant>*</constant>
+            </setHeader>
+            <setHeader headerName="Access-Control-Allow-Headers" id="_setHeader7">
+                <constant>x-requested-with</constant>
+            </setHeader>
+            <transform id="_transform1">
+                <constant>OK</constant>
+            </transform>
+        </route>
+        
         <route id="processingRoute">
-            <from id="_from1" uri="direct:processingRoute"/>
+            <from id="_from1" uri="seda:processingRoute"/>
             <to id="_to1" uri="bean:dancemovedata?method=getMoves(${header.direction},${headers})"/>
             <log id="_log1" message=" ${body}"/>
             <split id="jsonArray">
@@ -51,18 +69,6 @@
                     </otherwise>
                 </choice>
             </split>
-            <setHeader headerName="Access-Control-Allow-Methods" id="_setHeader5">
-                <constant>POST, GET, OPTIONS</constant>
-            </setHeader>
-            <setHeader headerName="Access-Control-Allow-Origin" id="_setHeader6">
-                <constant>*</constant>
-            </setHeader>
-            <setHeader headerName="Access-Control-Allow-Headers" id="_setHeader7">
-                <constant>x-requested-with</constant>
-            </setHeader>
-            <transform id="_transform1">
-                <constant>OK</constant>
-            </transform>
         </route>
         <route id="SedaRoute0">
             <from id="_from0" uri="file:sequences?noop=true"/>
